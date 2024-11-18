@@ -5,13 +5,19 @@ import org.example.databaseapp.Database;
 import java.sql.ResultSet;
 
 public class ClassRoom {
-    private String nameTable = "room_class";
-//    private static final String classRoomCode = "room_class_code";
-//    private static final String className = "class_name";
-//    private static final String price = "price";
+    private static String nameTable = "room_class";
     private int classRoomCode;
     private String className;
     private double price;
+    private static ResultSet dataFromDB = Database.makeQuerySelectColumn("*", nameTable);
+
+    public static ResultSet getDataFromDB() {
+        return dataFromDB;
+    }
+
+    public static void setDataFromDB(ResultSet dataFromDB) {
+        ClassRoom.dataFromDB = dataFromDB;
+    }
 
     public ClassRoom(){
         this.classRoomCode = 0;

@@ -5,6 +5,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.databaseapp.tables.ClassRoom;
 
+import java.sql.SQLException;
+
 public class ClassRoomModelTable {
     private static final TableView<ClassRoom> table = new TableView<>();
     private static final TableColumn<ClassRoom, Integer> columnCode = new TableColumn<>("Код класса");
@@ -21,7 +23,15 @@ public class ClassRoomModelTable {
     }
 
     public static void setDataInCell(){
-        table.getItems().add(new ClassRoom(100, "fip", 800));
+            try {
+                while(ClassRoom.getDataFromDB().next()){
+                    table.getItems().add(new ClassRoom(ClassRoom.getDataFromDB().getInt("room_class_code"),
+                                                       ClassRoom.getDataFromDB().getString("class_name"),
+                                                       ClassRoom.getDataFromDB().getDouble("price")));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
     }
 
     public static TableView<ClassRoom> buildTable(){

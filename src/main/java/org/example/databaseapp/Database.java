@@ -34,22 +34,20 @@ public class Database {
         return connect;
     }
 
-    public static void makeQueryDelete(String nameTable, String nameIdTable, int numberInTable) throws SQLException {
-        final String QUERY_DELETE = "DELETE FROM " + nameTable + " WHERE " + nameIdTable + " = ?";
+    public static void makeQueryDelete(String nameTable, String designationIdTable, int id) throws SQLException {
+        final String QUERY_DELETE = "DELETE FROM " + nameTable + " WHERE " + designationIdTable + " = ?";
         PreparedStatement preparedStatement = connect.prepareStatement(QUERY_DELETE);
-        preparedStatement.setInt(1, numberInTable);
+        preparedStatement.setInt(1, id);
         preparedStatement.executeUpdate();
     }
 
     public static ResultSet makeQuerySelectColumn(String nameColumn, String nameTable){
-        final String QUERY = "SELECT ? FROM ?" ;
-        PreparedStatement preparedStatement;
+        final String QUERY = "SELECT " + nameColumn + " FROM " + nameTable;
+        Statement statement;
         ResultSet resultSet;
         try {
-            preparedStatement = connect.prepareStatement(QUERY);
-            preparedStatement.setString(1, nameColumn);
-            preparedStatement.setString(2, nameTable);
-            resultSet = preparedStatement.executeQuery();
+            statement = connect.createStatement();
+            resultSet = statement.executeQuery(QUERY);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
