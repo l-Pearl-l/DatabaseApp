@@ -13,4 +13,6 @@ module org.example.databaseapp {
     opens org.example.databaseapp.tables to javafx.fxml;
     exports org.example.databaseapp.modelsTable;
     opens org.example.databaseapp.modelsTable to javafx.fxml;
+    exports org.example.databaseapp.panels;
+    opens org.example.databaseapp.panels to javafx.fxml;
 }

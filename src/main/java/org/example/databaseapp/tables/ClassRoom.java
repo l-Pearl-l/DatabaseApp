@@ -9,7 +9,17 @@ public class ClassRoom {
     private int classRoomCode;
     private String className;
     private double price;
-    private static ResultSet dataFromDB = Database.makeQuerySelectColumn("*", nameTable);
+    private static ResultSet dataFromDB = Database.makeQuerySelectAll(nameTable);
+
+    public ClassRoom(){
+
+    }
+
+    public ClassRoom(int classRoomCode, String className, double price){
+        this.classRoomCode = classRoomCode;
+        this.className = className;
+        this.price = price;
+    }
 
     public static ResultSet getDataFromDB() {
         return dataFromDB;
@@ -17,18 +27,6 @@ public class ClassRoom {
 
     public static void setDataFromDB(ResultSet dataFromDB) {
         ClassRoom.dataFromDB = dataFromDB;
-    }
-
-    public ClassRoom(){
-        this.classRoomCode = 0;
-        this.className = "";
-        this.price = 0.0;
-    }
-
-    public ClassRoom(int classRoomCode, String className, double price){
-        this.classRoomCode = classRoomCode;
-        this.className = className;
-        this.price = price;
     }
 
     public String getNameTable() {

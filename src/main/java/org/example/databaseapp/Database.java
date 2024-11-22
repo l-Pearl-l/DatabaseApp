@@ -29,8 +29,8 @@ public class Database {
         }
 
         Connection connect = DriverManager.getConnection(dataConnect.getProperty("url"),
-                dataConnect.getProperty("login"),
-                dataConnect.getProperty("password"));
+                                                         dataConnect.getProperty("login"),
+                                                         dataConnect.getProperty("password"));
         return connect;
     }
 
@@ -41,8 +41,8 @@ public class Database {
         preparedStatement.executeUpdate();
     }
 
-    public static ResultSet makeQuerySelectColumn(String nameColumn, String nameTable){
-        final String QUERY = "SELECT " + nameColumn + " FROM " + nameTable;
+    public static ResultSet makeQuerySelectAll(String nameTable){
+        final String QUERY = "SELECT * " + " FROM " + nameTable;
         Statement statement;
         ResultSet resultSet;
         try {

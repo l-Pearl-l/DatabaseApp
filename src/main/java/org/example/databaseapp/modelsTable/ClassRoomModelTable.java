@@ -4,30 +4,37 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.databaseapp.tables.ClassRoom;
+import org.example.databaseapp.tables.Customer;
 
+import javax.xml.transform.Result;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClassRoomModelTable {
+public class ClassRoomModelTable extends ClassRoom{
     private static final TableView<ClassRoom> table = new TableView<>();
     private static final TableColumn<ClassRoom, Integer> columnCode = new TableColumn<>("Код класса");
     private static final TableColumn<ClassRoom, String> columnClassName = new TableColumn<>("Название класса");
     private static final TableColumn<ClassRoom, Double> columnPrice = new TableColumn<>("Цена");
+    private static final ResultSet dataDB = ClassRoom.getDataFromDB();
 
+    public ClassRoomModelTable(){
 
-    public static void attachColumns(){
+    }
+
+    private static void attachColumns(){
         columnCode.setCellValueFactory(new PropertyValueFactory<>("classRoomCode"));
         columnClassName.setCellValueFactory(new PropertyValueFactory<>("className"));
         columnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        table.getColumns().addAll(columnCode, columnClassName, columnPrice);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.getColumns().addAll(columnCode, columnClassName, columnPrice);
     }
 
-    public static void setDataInCell(){
+    private static void setDataInCell(){
             try {
-                while(ClassRoom.getDataFromDB().next()){
-                    table.getItems().add(new ClassRoom(ClassRoom.getDataFromDB().getInt("room_class_code"),
-                                                       ClassRoom.getDataFromDB().getString("class_name"),
-                                                       ClassRoom.getDataFromDB().getDouble("price")));
+                while(dataDB.next()){
+                    table.getItems().add(new ClassRoom(dataDB.getInt("room_class_code"),
+                                                       dataDB.getString("class_name"),
+                                                       dataDB.getDouble("price")));
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -37,6 +44,10 @@ public class ClassRoomModelTable {
     public static TableView<ClassRoom> buildTable(){
         attachColumns();
         setDataInCell();
+        return table;
+    }
+
+    public static TableView<ClassRoom> getTable(){
         return table;
     }
 }
