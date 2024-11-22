@@ -53,7 +53,7 @@ public class PanelSelected {
         WindowMain.getPositionTable().getChildren().clear();
         try {
             WindowMain.getPositionTable().getChildren().add((Node) modelTable.getDeclaredMethod("buildTable").invoke(null));
-            WindowMain.setActiveTable((TableView<?>) modelTable.getDeclaredMethod("getTable").invoke(null));
+            WindowMain.setActiveTable((TableView<?>)modelTable.getDeclaredMethod("getTable").invoke(null));
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

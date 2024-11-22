@@ -25,9 +25,10 @@ public class WindowMain {
         selectionTable.setOnAction(e -> {
             panelSelection.getChildren().clear();
             panelSelection.getChildren().add(PanelSelected.createPanel());
+
         });
         delete.setOnAction(e -> {
-            delete();
+           delete();
         });
     }
 
@@ -59,15 +60,9 @@ public class WindowMain {
     }
 
 
-    private static int delete(){
-        Class<?> selectedId = activeTable.getSelectionModel().getSelectedItem().getClass();
-        int id = 0;
-        try {
-            id = (int) selectedId.getDeclaredMethod("getId").invoke(null);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println(id);
-        return id;
+    private static Class<?> delete(){
+        Class<?> selectedId = activeTable.getSelectionModel().selectedItemProperty().getClass();
+        System.out.println(selectedId);
+        return selectedId;
     }
 }

@@ -4,22 +4,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.databaseapp.tables.ClassRoom;
-import org.example.databaseapp.tables.Customer;
 
-import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClassRoomModelTable extends ClassRoom{
+public class ClassRoomModelTable{
     private static final TableView<ClassRoom> table = new TableView<>();
     private static final TableColumn<ClassRoom, Integer> columnCode = new TableColumn<>("Код класса");
     private static final TableColumn<ClassRoom, String> columnClassName = new TableColumn<>("Название класса");
     private static final TableColumn<ClassRoom, Double> columnPrice = new TableColumn<>("Цена");
     private static final ResultSet dataDB = ClassRoom.getDataFromDB();
-
-    public ClassRoomModelTable(){
-
-    }
 
     private static void attachColumns(){
         columnCode.setCellValueFactory(new PropertyValueFactory<>("classRoomCode"));
