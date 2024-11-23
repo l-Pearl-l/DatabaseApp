@@ -3,17 +3,23 @@ package org.example.databaseapp.modelsTable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.databaseapp.Database;
 import org.example.databaseapp.tables.ClassRoom;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ClassRoomModelTable{
+    private static final String nameTable = "room_class";
     private static final TableView<ClassRoom> table = new TableView<>();
     private static final TableColumn<ClassRoom, Integer> columnCode = new TableColumn<>("Код класса");
     private static final TableColumn<ClassRoom, String> columnClassName = new TableColumn<>("Название класса");
     private static final TableColumn<ClassRoom, Double> columnPrice = new TableColumn<>("Цена");
     private static final ResultSet dataDB = ClassRoom.getDataFromDB();
+
+    public static String getNameTable(){
+       return ClassRoomModelTable.nameTable;
+    }
 
     private static void attachColumns(){
         columnCode.setCellValueFactory(new PropertyValueFactory<>("classRoomCode"));
@@ -44,4 +50,19 @@ public class ClassRoomModelTable{
     public static TableView<ClassRoom> getTable(){
         return table;
     }
+
+    public static void delete(){
+        ClassRoom selectedId = table.getSelectionModel().getSelectedItem();
+        int id = selectedId.getClassRoomCode();
+        try {
+            Database.makeQueryDelete(nameTable, "room_class_code", id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void clearColumns(){
+        table.getColumns().clear();
+    }
+
 }

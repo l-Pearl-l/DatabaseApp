@@ -3,6 +3,7 @@ package org.example.databaseapp.modelsTable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.databaseapp.Database;
 import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Post;
 
@@ -10,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PostsModelTable {
+    private static final String nameTable = "posts";
     private static final TableView<Post> table = new TableView<>();
     private static final TableColumn<Post, Integer> postCodeColumn = new TableColumn<>("Код должности");
     private static final TableColumn<Post, String> postNameColumn = new TableColumn<>("Название должности");
@@ -37,15 +39,28 @@ public class PostsModelTable {
         }
     }
 
+    public static String getNameTable(){
+        return PostsModelTable.nameTable;
+    }
+
     public static TableView<Post> buildTable(){
         attachColumn();
         setDataInCell();
         return table;
     }
 
+    public static void delete(){
+        Post selectedId = table.getSelectionModel().getSelectedItem();
+        int id = selectedId.getPostCode();
+        try {
+            Database.makeQueryDelete(nameTable, "post_code", id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    public static TableView<Post> getTable(){
-        return table;
+    public static void clearColumns(){
+        table.getColumns().clear();
     }
 
 }

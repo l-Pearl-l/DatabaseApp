@@ -3,12 +3,14 @@ package org.example.databaseapp.modelsTable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.databaseapp.Database;
 import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Employee;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeModelTable {
+    private static final String nameTable = "employee";
     private static final TableView<Employee> table = new TableView<>();
     private static final TableColumn employeeIdColumn = new TableColumn<>("Id сотрудника");
     private static final TableColumn fioColumn = new TableColumn<>("Фамилия, имя, отчество");
@@ -51,5 +53,23 @@ public class EmployeeModelTable {
 
     public static TableView<Employee> getTable(){
         return table;
+    }
+
+    public static String getNameTable(){
+        return EmployeeModelTable.nameTable;
+    }
+
+    public static void delete(){
+        Employee selectedId = table.getSelectionModel().getSelectedItem();
+        int id = selectedId.getEmployeeId();
+        try {
+            Database.makeQueryDelete(nameTable, "employee_id", id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void clearColumns(){
+        table.getColumns().clear();
     }
 }

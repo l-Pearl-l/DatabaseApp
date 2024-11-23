@@ -8,7 +8,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.databaseapp.GUI;
+import org.example.databaseapp.modelsTable.*;
 import org.example.databaseapp.panels.PanelSelected;
+import org.example.databaseapp.tables.ClassRoom;
+import org.example.databaseapp.tables.Customer;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -19,7 +22,11 @@ public class WindowMain {
     private static final Button delete = GUI.createButton("Удалить");
     private static final HBox panelSelection = new HBox();
     private static final VBox positionTable = new VBox();
-    private static TableView<?> activeTable;
+    private static String nameTable;
+
+    public static void setNameTable(String nameTable) {
+        WindowMain.nameTable = nameTable;
+    }
 
     static{
         selectionTable.setOnAction(e -> {
@@ -55,14 +62,28 @@ public class WindowMain {
         return positionTable;
     }
 
-    public static void setActiveTable(TableView<?> activeTable){
-        WindowMain.activeTable = activeTable;
-    }
 
+    private static void delete(){
+        switch (nameTable){
+            case("room_class"):
+                ClassRoomModelTable.delete();
+                break;
+            case("posts"):
+                PostsModelTable.delete();
+                break;
+            case("services"):
+                ServicesModelTable.delete();
+                break;
+            case("hotel_room"):
+                HotelRoomModelTable.delete();
+                break;
+            case("employee"):
+                EmployeeModelTable.delete();
+                break;
+            case("customer"):
+                CustomerModelTable.delete();
+                break;
+        }
 
-    private static Class<?> delete(){
-        Class<?> selectedId = activeTable.getSelectionModel().selectedItemProperty().getClass();
-        System.out.println(selectedId);
-        return selectedId;
     }
 }

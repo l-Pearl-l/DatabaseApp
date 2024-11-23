@@ -1,6 +1,7 @@
 package org.example.databaseapp.tables;
 
 import org.example.databaseapp.Database;
+import org.example.databaseapp.modelsTable.ClassRoomModelTable;
 
 import java.sql.ResultSet;
 
@@ -21,39 +22,23 @@ public class Post {
         return nameTable;
     }
 
-    public static void setNameTable(String nameTable) {
-        Post.nameTable = nameTable;
-    }
-
     public int getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(int postCode) {
-        this.postCode = postCode;
-    }
 
     public String getPostName() {
         return postName;
     }
 
-    public void setPostName(String postName) {
-        this.postName = postName;
-    }
 
     public double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
 
     public static ResultSet getDataFromDB() {
         return dataFromDB;
     }
 
-    public void setDataFromDB(ResultSet dataFromDB) {
-        this.dataFromDB = dataFromDB;
-    }
 }

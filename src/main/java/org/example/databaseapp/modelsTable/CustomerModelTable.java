@@ -3,6 +3,8 @@ package org.example.databaseapp.modelsTable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.databaseapp.Database;
+import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Customer;
 
 import java.sql.ResultSet;
@@ -10,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class CustomerModelTable {
+    private static final String nameTable = "customer";
     private static final TableView<Customer> table = new TableView<>();
     private static final TableColumn<Customer, Integer> customerIdColumn = new TableColumn<>("Id гостя");
     private static final TableColumn<Customer, String> fioColumn = new TableColumn<>("Фамилия, имя, отчество");
@@ -52,5 +55,23 @@ public class CustomerModelTable {
 
     public static TableView<Customer> getTable(){
         return table;
+    }
+
+    public static String getNameTable(){
+        return CustomerModelTable.nameTable;
+    }
+
+    public static void delete(){
+        Customer selectedId = table.getSelectionModel().getSelectedItem();
+        int id = selectedId.getCustomerId();
+        try {
+            Database.makeQueryDelete(nameTable, "customer_id", id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void clearColumns(){
+        table.getColumns().clear();
     }
 }

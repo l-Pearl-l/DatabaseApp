@@ -6,6 +6,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import org.example.databaseapp.GUI;
 import org.example.databaseapp.modelsTable.*;
+import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.windows.WindowMain;
 import java.lang.reflect.InvocationTargetException;
 
@@ -52,10 +53,20 @@ public class PanelSelected {
     private static void showModelTable(Class<?> modelTable){
         WindowMain.getPositionTable().getChildren().clear();
         try {
+            clearColumns();
             WindowMain.getPositionTable().getChildren().add((Node) modelTable.getDeclaredMethod("buildTable").invoke(null));
-            WindowMain.setActiveTable((TableView<?>)modelTable.getDeclaredMethod("getTable").invoke(null));
+            WindowMain.setNameTable((String) modelTable.getDeclaredMethod("getNameTable").invoke(null));
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void clearColumns(){
+        ClassRoomModelTable.clearColumns();
+        EmployeeModelTable.clearColumns();
+        CustomerModelTable.clearColumns();
+        PostsModelTable.clearColumns();
+        ServicesModelTable.clearColumns();
+        HotelRoomModelTable.clearColumns();
     }
 }
