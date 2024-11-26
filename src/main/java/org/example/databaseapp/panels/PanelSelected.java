@@ -2,11 +2,10 @@ package org.example.databaseapp.panels;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import org.example.databaseapp.GUI;
 import org.example.databaseapp.modelsTable.*;
-import org.example.databaseapp.tables.ClassRoom;
+import org.example.databaseapp.panels.inserts.*;
 import org.example.databaseapp.windows.WindowMain;
 import java.lang.reflect.InvocationTargetException;
 
@@ -20,27 +19,27 @@ public class PanelSelected {
 
     static{
         buttonClassRooms.setOnAction(e -> {
-            showModelTable(ClassRoomModelTable.class);
+            showModelTable(ClassRoomModelTable.class, InsertPanelClassRoom.class);
         });
 
         buttonServices.setOnAction(e -> {
-            showModelTable(ServicesModelTable.class);
+            showModelTable(ServicesModelTable.class, InsertPanelService.class);
         });
 
         buttonPosts.setOnAction(e -> {
-            showModelTable(PostsModelTable.class);
+           showModelTable(PostsModelTable.class, InsertPanelPosts.class);
         });
 
         buttonCustomers.setOnAction(e -> {
-            showModelTable(CustomerModelTable.class);
+           showModelTable(CustomerModelTable.class, InsertPanelCustomer.class);
         });
 
         buttonHotelRoom.setOnAction((e -> {
-            showModelTable((HotelRoomModelTable.class));
+            showModelTable(HotelRoomModelTable.class, InsertPanelHotelRoom.class);
         }));
 
         buttonEmployees.setOnAction(e -> {
-            showModelTable(EmployeeModelTable.class);
+            showModelTable(EmployeeModelTable.class, InsertPanelEmployee.class);
         });
     }
 
@@ -50,23 +49,29 @@ public class PanelSelected {
         return hbox;
     }
 
-    private static void showModelTable(Class<?> modelTable){
+    private static void showModelTable(Class<?> modelTable, Class<?> panelInsert){
         WindowMain.getPositionTable().getChildren().clear();
         try {
             clearColumns();
+            clearPanelInsert();
             WindowMain.getPositionTable().getChildren().add((Node) modelTable.getDeclaredMethod("buildTable").invoke(null));
+            WindowMain.getPanelInsert().getChildren().add((Node) panelInsert.getDeclaredMethod("createPanel").invoke(null));
             WindowMain.setNameTable((String) modelTable.getDeclaredMethod("getNameTable").invoke(null));
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void clearColumns(){
+    private static void clearColumns(){
         ClassRoomModelTable.clearColumns();
         EmployeeModelTable.clearColumns();
         CustomerModelTable.clearColumns();
         PostsModelTable.clearColumns();
         ServicesModelTable.clearColumns();
         HotelRoomModelTable.clearColumns();
+    }
+
+    private static void clearPanelInsert(){
+        WindowMain.getPanelInsert().getChildren().clear();
     }
 }

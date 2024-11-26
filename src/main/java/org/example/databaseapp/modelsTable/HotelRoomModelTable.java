@@ -44,7 +44,7 @@ public class HotelRoomModelTable {
                                                     dataDB.getInt("customer_id"),
                                                     dataDB.getInt("number_of_people"),
                                                     dataDB.getString("room_class"),
-                                                    dataDB.getInt("additional_services"),
+                                                    dataDB.getInt("service"),
                                                     dataDB.getInt("floor"),
                                                     dataDB.getDouble("price"),
                                                     dataDB.getString("busy")));
@@ -77,6 +77,7 @@ public class HotelRoomModelTable {
             throw new RuntimeException(e);
         }
     }
+
 
     public static void clearColumns(){
         table.getColumns().clear();

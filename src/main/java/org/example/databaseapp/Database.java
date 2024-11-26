@@ -53,4 +53,22 @@ public class Database {
         }
         return resultSet;
     }
+
+    public static void makeQueryInsert(String nameTable, Object... values){
+        StringBuilder query = new StringBuilder("INSERT INTO " + nameTable + " VALUES (");
+        for(int i = 0; i < values.length; i++){
+            query.append("?, ");
+        }
+
+        query.setLength(query.length() - 2);
+        query.append(")");
+        try(PreparedStatement preparedStatement = connect.prepareStatement(query.toString())) {
+            for(int i = 0; i < values.length; i++){
+                preparedStatement.setObject(i + 1, values[i]);
+            }
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
