@@ -2,8 +2,12 @@ package org.example.databaseapp.modelsTable;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import org.example.databaseapp.Database;
+import org.example.databaseapp.GUI;
+import org.example.databaseapp.panels.Panel;
 import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.HotelRoom;
 
@@ -22,6 +26,16 @@ public class HotelRoomModelTable {
     private static final TableColumn<HotelRoom, Double> priceColumn = new TableColumn<>("Цена");
     private static final TableColumn<HotelRoom, String> busyColumn = new TableColumn<>("Занят или нет");
     private static final ResultSet dataDB = HotelRoom.getDataFromDB();
+    private static final HBox panelInsert = new HBox();
+    private static final TextField id = GUI.createTextField("id");
+    private static final TextField idCustomer = GUI.createTextField("id гостя");
+    private static final TextField numberOfPeople = GUI.createTextField("Количество людей");
+    private static final TextField idClassRoom = GUI.createTextField("id класса номера");
+    private static final TextField additionalService = GUI.createTextField("Услуга");
+    private static final TextField floor = GUI.createTextField("Этаж");
+    private static final TextField price = GUI.createTextField("Цена");
+    private static final TextField busy = GUI.createTextField("Занятость");
+
 
     private static void attachColumn(){
         hotelRoomIdColumn.setCellValueFactory(new PropertyValueFactory<>("hotelRoomId"));
@@ -76,6 +90,20 @@ public class HotelRoomModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static HBox createPanel(){
+        Panel.clearInsertPanels(panelInsert);
+        panelInsert.getChildren().addAll(id, idCustomer, numberOfPeople, idClassRoom, additionalService, floor, price, busy);
+        return panelInsert;
+    }
+
+    public static void insert(){
+        Database.makeQueryInsert("hotel_room", Integer.parseInt(id.getText()),
+                Integer.parseInt(numberOfPeople.getText()), Integer.parseInt(idClassRoom.getText()),
+                Integer.parseInt(floor.getText()), Double.parseDouble(price.getText()), busy.getText(),
+                Integer.parseInt(additionalService.getText()),
+                Integer.parseInt(idCustomer.getText()));
     }
 
 

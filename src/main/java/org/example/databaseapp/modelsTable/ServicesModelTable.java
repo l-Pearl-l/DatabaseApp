@@ -2,8 +2,12 @@ package org.example.databaseapp.modelsTable;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import org.example.databaseapp.Database;
+import org.example.databaseapp.GUI;
+import org.example.databaseapp.panels.Panel;
 import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Service;
 
@@ -15,6 +19,11 @@ public class ServicesModelTable {
     private static final TableColumn<Service, Integer> serviceCode = new TableColumn<>("Код услуги");
     private static final TableColumn<Service, String> serviceName = new TableColumn<>("Название услуги");
     private static final TableColumn<Service, Double> servicePrice = new TableColumn<>("Цена");
+    private static final HBox panelInsert = new HBox();
+    private static final TextField id = GUI.createTextField("id");
+    private static final TextField nameService = GUI.createTextField("Название услуги");
+    private static final TextField price = GUI.createTextField("Цена");
+
 
     private static void attachColumn(){
         serviceCode.setCellValueFactory(new PropertyValueFactory<>("serviceCode"));
@@ -59,6 +68,16 @@ public class ServicesModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static HBox createPanel(){
+        Panel.clearInsertPanels(panelInsert);
+        panelInsert.getChildren().addAll(id, nameService, price);
+        return panelInsert;
+    }
+
+    public static void insert(){
+        Database.makeQueryInsert("services", Integer.parseInt(id.getText()), nameService.getText(), Double.parseDouble(price.getText()));
     }
 
     public static void clearColumns(){

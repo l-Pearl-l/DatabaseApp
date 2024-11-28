@@ -2,8 +2,12 @@ package org.example.databaseapp.modelsTable;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import org.example.databaseapp.Database;
+import org.example.databaseapp.GUI;
+import org.example.databaseapp.panels.Panel;
 import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Customer;
 
@@ -12,6 +16,12 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class CustomerModelTable {
+    private static final HBox panelInsert = new HBox();
+    private static final TextField idCustomer = GUI.createTextField("id");
+    private static final TextField fio = GUI.createTextField("ФИО");
+    private static final TextField dataPassport = GUI.createTextField("Данные паспорта");
+    private static final TextField dateArrival = GUI.createTextField("Дата прибытия");
+    private static final TextField dateDeparture = GUI.createTextField("Дата выезда");
     private static final String nameTable = "customer";
     private static final TableView<Customer> table = new TableView<>();
     private static final TableColumn<Customer, Integer> customerIdColumn = new TableColumn<>("Id гостя");
@@ -20,6 +30,7 @@ public class CustomerModelTable {
     private static final TableColumn<Customer, String> dateArrivalColumn = new TableColumn<>("Дата прибытия");
     private static final TableColumn<Customer, String> dateDepartureColumn = new TableColumn<>("Дата выезда");
     private static final ResultSet dataDB = Customer.getDataFromDB();
+
 
     private static void attachColumn() {
         customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -69,6 +80,17 @@ public class CustomerModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static HBox createPanel(){
+        Panel.clearInsertPanels(panelInsert);
+        panelInsert.getChildren().addAll(idCustomer, fio, dataPassport, dateArrival, dateDeparture);
+        return panelInsert;
+    }
+
+    public static void insert(){
+        Database.makeQueryInsert("customer", Integer.parseInt(idCustomer.getText()),
+                fio.getText(), dataPassport.getText(), dateArrival.getText(), dateDeparture.getText());
     }
 
     public static void clearColumns(){

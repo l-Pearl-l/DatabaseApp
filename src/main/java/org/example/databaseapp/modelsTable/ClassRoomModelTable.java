@@ -2,8 +2,12 @@ package org.example.databaseapp.modelsTable;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import org.example.databaseapp.Database;
+import org.example.databaseapp.GUI;
+import org.example.databaseapp.panels.Panel;
 import org.example.databaseapp.tables.ClassRoom;
 
 import java.sql.ResultSet;
@@ -16,6 +20,11 @@ public class ClassRoomModelTable{
     private static final TableColumn<ClassRoom, String> columnClassName = new TableColumn<>("Название класса");
     private static final TableColumn<ClassRoom, Double> columnPrice = new TableColumn<>("Цена");
     private static final ResultSet dataDB = ClassRoom.getDataFromDB();
+    private static final HBox panelInsert = new HBox();
+    private static final TextField id = GUI.createTextField("id");
+    private static final TextField nameClass = GUI.createTextField("Название класса");
+    private static final TextField price = GUI.createTextField("Цена");
+
 
     public static String getNameTable(){
        return ClassRoomModelTable.nameTable;
@@ -59,6 +68,22 @@ public class ClassRoomModelTable{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static HBox createPanel(){
+        Panel.clearInsertPanels(panelInsert);
+        panelInsert.getChildren().addAll(id, nameClass, price);
+        return panelInsert;
+    }
+
+    public static void insert(){
+        Database.makeQueryInsert("room_class", Integer.parseInt(id.getText()),
+                nameClass.getText(),
+                Double.parseDouble(price.getText()));
+    }
+
+    public static void update(){
+
     }
 
     public static void clearColumns(){

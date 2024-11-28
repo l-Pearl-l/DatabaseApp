@@ -2,8 +2,12 @@ package org.example.databaseapp.modelsTable;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import org.example.databaseapp.Database;
+import org.example.databaseapp.GUI;
+import org.example.databaseapp.panels.Panel;
 import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Employee;
 import java.sql.ResultSet;
@@ -19,6 +23,14 @@ public class EmployeeModelTable {
     private static final TableColumn educationColumn = new TableColumn<>("Образование");
     private static final TableColumn additionalLanguageColumn = new TableColumn<>("Дополнительный язык");
     private static final ResultSet dataDB = Employee.getDataFromDB();
+    private static final HBox panelInsert = new HBox();
+    private static final TextField id = GUI.createTextField("id");
+    private static final TextField fio = GUI.createTextField("ФИО");
+    private static final TextField postCode = GUI.createTextField("Код должности");
+    private static final TextField education = GUI.createTextField("Образование");
+    private static final TextField phone = GUI.createTextField("Номер телефона");
+    private static final TextField additionalLanguage = GUI.createTextField("Второй язык");
+
 
     private static void attachColumn(){
         educationColumn.setCellValueFactory(new PropertyValueFactory<>("education"));
@@ -67,6 +79,17 @@ public class EmployeeModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static HBox createPanel(){
+        Panel.clearInsertPanels(panelInsert);
+        panelInsert.getChildren().addAll(id, fio, postCode, education, phone, additionalLanguage);
+        return panelInsert;
+    }
+
+    public static void insert(){
+        Database.makeQueryInsert("employee", Integer.parseInt(id.getText()),
+                fio.getText(), Integer.parseInt(postCode.getText()), phone.getText(), education.getText(), additionalLanguage.getText());
     }
 
     public static void clearColumns(){

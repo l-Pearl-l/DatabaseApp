@@ -2,8 +2,12 @@ package org.example.databaseapp.modelsTable;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import org.example.databaseapp.Database;
+import org.example.databaseapp.GUI;
+import org.example.databaseapp.panels.Panel;
 import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Post;
 
@@ -17,6 +21,10 @@ public class PostsModelTable {
     private static final TableColumn<Post, String> postNameColumn = new TableColumn<>("Название должности");
     private static final TableColumn<Post, Double> salaryColumn = new TableColumn<>("Зарплата");
     private static final ResultSet dataDB = Post.getDataFromDB();
+    private static final HBox panelInsert = new HBox();
+    private static final TextField id = GUI.createTextField("id");
+    private static final TextField namePost = GUI.createTextField("Название должности");
+    private static final TextField salary = GUI.createTextField("Зарплата");
 
 
     private static void attachColumn() {
@@ -57,6 +65,17 @@ public class PostsModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static HBox createPanel(){
+        Panel.clearInsertPanels(panelInsert);
+        panelInsert.getChildren().addAll(id, namePost, salary);
+        return panelInsert;
+    }
+
+    public static void insert(){
+        Database.makeQueryInsert("posts", Integer.parseInt(id.getText()), namePost.getText(),
+                Double.parseDouble(salary.getText()));
     }
 
     public static void clearColumns(){

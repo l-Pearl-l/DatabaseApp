@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import org.example.databaseapp.GUI;
 import org.example.databaseapp.modelsTable.*;
 import org.example.databaseapp.panels.PanelSelected;
-import org.example.databaseapp.panels.inserts.*;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -41,6 +40,9 @@ public class WindowMain {
         });
         insert.setOnAction(e -> {
             insert();
+        });
+        update.setOnAction(e -> {
+            update();
         });
     }
 
@@ -103,22 +105,45 @@ public class WindowMain {
     private static void insert(){
         switch (nameTable){
             case("room_class"):
-                InsertPanelClassRoom.insert();
+                ClassRoomModelTable.insert();
                 break;
             case("posts"):
-                InsertPanelPosts.insert();
+                PostsModelTable.insert();
                 break;
             case("services"):
-                InsertPanelService.insert();
+                ServicesModelTable.insert();
                 break;
             case("hotel_room"):
-                InsertPanelHotelRoom.insert();
+                HotelRoomModelTable.insert();
                 break;
             case("employee"):
-                InsertPanelEmployee.insert();
+                EmployeeModelTable.insert();
                 break;
             case("customer"):
-                InsertPanelCustomer.insert();
+                CustomerModelTable.insert();
+                break;
+        }
+    }
+
+    private static void update(){
+        switch (nameTable){
+            case("room_class"):
+                ClassRoomModelTable.update();
+                break;
+            case("posts"):
+                PostsModelTable.insert();
+                break;
+            case("services"):
+                ServicesModelTable.insert();
+                break;
+            case("hotel_room"):
+                HotelRoomModelTable.insert();
+                break;
+            case("employee"):
+                EmployeeModelTable.insert();
+                break;
+            case("customer"):
+                CustomerModelTable.insert();
                 break;
         }
     }

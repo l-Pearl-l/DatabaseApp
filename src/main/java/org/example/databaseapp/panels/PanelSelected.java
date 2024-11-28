@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import org.example.databaseapp.GUI;
 import org.example.databaseapp.modelsTable.*;
-import org.example.databaseapp.panels.inserts.*;
 import org.example.databaseapp.windows.WindowMain;
 import java.lang.reflect.InvocationTargetException;
 
@@ -19,27 +18,27 @@ public class PanelSelected {
 
     static{
         buttonClassRooms.setOnAction(e -> {
-            showModelTable(ClassRoomModelTable.class, InsertPanelClassRoom.class);
+            showModelTable(ClassRoomModelTable.class);
         });
 
         buttonServices.setOnAction(e -> {
-            showModelTable(ServicesModelTable.class, InsertPanelService.class);
+            showModelTable(ServicesModelTable.class);
         });
 
         buttonPosts.setOnAction(e -> {
-           showModelTable(PostsModelTable.class, InsertPanelPosts.class);
+           showModelTable(PostsModelTable.class);
         });
 
         buttonCustomers.setOnAction(e -> {
-           showModelTable(CustomerModelTable.class, InsertPanelCustomer.class);
+           showModelTable(CustomerModelTable.class);
         });
 
         buttonHotelRoom.setOnAction((e -> {
-            showModelTable(HotelRoomModelTable.class, InsertPanelHotelRoom.class);
+            showModelTable(HotelRoomModelTable.class);
         }));
 
         buttonEmployees.setOnAction(e -> {
-            showModelTable(EmployeeModelTable.class, InsertPanelEmployee.class);
+            showModelTable(EmployeeModelTable.class);
         });
     }
 
@@ -49,13 +48,13 @@ public class PanelSelected {
         return hbox;
     }
 
-    private static void showModelTable(Class<?> modelTable, Class<?> panelInsert){
+    private static void showModelTable(Class<?> modelTable){
         WindowMain.getPositionTable().getChildren().clear();
         try {
             clearColumns();
             clearPanelInsert();
             WindowMain.getPositionTable().getChildren().add((Node) modelTable.getDeclaredMethod("buildTable").invoke(null));
-            WindowMain.getPanelInsert().getChildren().add((Node) panelInsert.getDeclaredMethod("createPanel").invoke(null));
+            WindowMain.getPanelInsert().getChildren().add((Node) modelTable.getDeclaredMethod("createPanel").invoke(null));
             WindowMain.setNameTable((String) modelTable.getDeclaredMethod("getNameTable").invoke(null));
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
