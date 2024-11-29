@@ -12,8 +12,6 @@ import org.example.databaseapp.GUI;
 import org.example.databaseapp.modelsTable.*;
 import org.example.databaseapp.panels.PanelSelected;
 
-import java.lang.reflect.InvocationTargetException;
-
 
 public class WindowMain {
     private static final Button selectionTable = GUI.createButton("Выбрать таблицу");
@@ -33,7 +31,6 @@ public class WindowMain {
         selectionTable.setOnAction(e -> {
             panelSelection.getChildren().clear();
             panelSelection.getChildren().add(PanelSelected.createPanel());
-
         });
         delete.setOnAction(e -> {
            delete();
@@ -131,19 +128,19 @@ public class WindowMain {
                 ClassRoomModelTable.update();
                 break;
             case("posts"):
-                PostsModelTable.insert();
+                PostsModelTable.update();
                 break;
             case("services"):
                 ServicesModelTable.update();
                 break;
             case("hotel_room"):
-                HotelRoomModelTable.insert();
+                HotelRoomModelTable.update();
                 break;
             case("employee"):
-                EmployeeModelTable.insert();
+                EmployeeModelTable.update();
                 break;
             case("customer"):
-                CustomerModelTable.insert();
+                CustomerModelTable.update();
                 break;
         }
     }

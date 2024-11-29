@@ -14,15 +14,17 @@ import org.example.databaseapp.tables.Customer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomerModelTable {
+    private static final String nameTable = "customer";
     private static final HBox panelInsert = new HBox();
     private static final TextField idCustomer = GUI.createTextField("id");
     private static final TextField fio = GUI.createTextField("ФИО");
     private static final TextField dataPassport = GUI.createTextField("Данные паспорта");
     private static final TextField dateArrival = GUI.createTextField("Дата прибытия");
     private static final TextField dateDeparture = GUI.createTextField("Дата выезда");
-    private static final String nameTable = "customer";
     private static final TableView<Customer> table = new TableView<>();
     private static final TableColumn<Customer, Integer> customerIdColumn = new TableColumn<>("Id гостя");
     private static final TableColumn<Customer, String> fioColumn = new TableColumn<>("Фамилия, имя, отчество");
@@ -30,6 +32,7 @@ public class CustomerModelTable {
     private static final TableColumn<Customer, String> dateArrivalColumn = new TableColumn<>("Дата прибытия");
     private static final TableColumn<Customer, String> dateDepartureColumn = new TableColumn<>("Дата выезда");
     private static final ResultSet dataDB = Customer.getDataFromDB();
+    private static final Map<String, Object> dataUpdate = new HashMap<>();
 
 
     private static void attachColumn() {
@@ -44,7 +47,7 @@ public class CustomerModelTable {
                                   dateArrivalColumn, dateDepartureColumn);
     }
 
-    private static void setDataInCell() {
+    public static void setDataInCell() {
         try {
             while (dataDB.next()) {
                 table.getItems().add(new Customer(dataDB.getInt("customer_id"),
@@ -57,6 +60,14 @@ public class CustomerModelTable {
             throw new RuntimeException(e);
         }
     }
+
+    private static void fillDataUpdate(){
+        dataUpdate.put("fio", fio.getText());
+        dataUpdate.put("data_passport", dataPassport.getText());
+        dataUpdate.put("date_arrival", dateArrival.getText());
+        dataUpdate.put("date_departure", dateDeparture.getText());
+    }
+
 
     public static TableView<Customer> buildTable(){
         attachColumn();
@@ -91,6 +102,11 @@ public class CustomerModelTable {
     public static void insert(){
         Database.makeQueryInsert("customer", Integer.parseInt(idCustomer.getText()),
                 fio.getText(), dataPassport.getText(), dateArrival.getText(), dateDeparture.getText());
+    }
+
+    public static void update(){
+        fillDataUpdate();
+        Database.makeQueryUpdate(nameTable, dataUpdate, "customer_id", Integer.parseInt(idCustomer.getText()));
     }
 
     public static void clearColumns(){

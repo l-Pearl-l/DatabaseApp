@@ -13,6 +13,8 @@ import org.example.databaseapp.tables.HotelRoom;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class HotelRoomModelTable {
     private static final String nameTable = "hotel_room";
@@ -35,7 +37,7 @@ public class HotelRoomModelTable {
     private static final TextField floor = GUI.createTextField("Этаж");
     private static final TextField price = GUI.createTextField("Цена");
     private static final TextField busy = GUI.createTextField("Занятость");
-
+    private static final Map<String, Object> dataUpdate = new LinkedHashMap<>();
 
     private static void attachColumn(){
         hotelRoomIdColumn.setCellValueFactory(new PropertyValueFactory<>("hotelRoomId"));
@@ -66,6 +68,16 @@ public class HotelRoomModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void fillDataUpdate(){
+        dataUpdate.put("number_of_people", Integer.parseInt(numberOfPeople.getText()));
+        dataUpdate.put("room_class", Integer.parseInt(idClassRoom.getText()));
+        dataUpdate.put("floor", Integer.parseInt(floor.getText()));
+        dataUpdate.put("price", Double.parseDouble(price.getText()));
+        dataUpdate.put("busy", busy.getText());
+        dataUpdate.put("service", Integer.parseInt(additionalService.getText()));
+        dataUpdate.put("customer_id", Integer.parseInt(idCustomer.getText()));
     }
 
     public static TableView<HotelRoom> buildTable(){
@@ -104,6 +116,11 @@ public class HotelRoomModelTable {
                 Integer.parseInt(floor.getText()), Double.parseDouble(price.getText()), busy.getText(),
                 Integer.parseInt(additionalService.getText()),
                 Integer.parseInt(idCustomer.getText()));
+    }
+
+    public static void update(){
+        fillDataUpdate();
+        Database.makeQueryUpdate(nameTable, dataUpdate, "hotel_room_id", Integer.parseInt(id.getText()));
     }
 
 

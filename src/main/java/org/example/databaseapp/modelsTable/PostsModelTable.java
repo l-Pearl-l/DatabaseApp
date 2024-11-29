@@ -13,6 +13,8 @@ import org.example.databaseapp.tables.Post;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class PostsModelTable {
     private static final String nameTable = "posts";
@@ -25,7 +27,7 @@ public class PostsModelTable {
     private static final TextField id = GUI.createTextField("id");
     private static final TextField namePost = GUI.createTextField("Название должности");
     private static final TextField salary = GUI.createTextField("Зарплата");
-
+    private static final Map<String, Object> dataUpdate = new LinkedHashMap<>();
 
     private static void attachColumn() {
         postCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postCode"));
@@ -45,6 +47,11 @@ public class PostsModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void fillDataUpdate(){
+        dataUpdate.put("post_name", namePost.getText());
+        dataUpdate.put("salary", Double.parseDouble(salary.getText()));
     }
 
     public static String getNameTable(){
@@ -76,6 +83,11 @@ public class PostsModelTable {
     public static void insert(){
         Database.makeQueryInsert("posts", Integer.parseInt(id.getText()), namePost.getText(),
                 Double.parseDouble(salary.getText()));
+    }
+
+    public static void update(){
+        fillDataUpdate();
+        Database.makeQueryUpdate(nameTable, dataUpdate, "post_code", Integer.parseInt(id.getText()));
     }
 
     public static void clearColumns(){

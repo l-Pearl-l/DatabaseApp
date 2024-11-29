@@ -12,6 +12,8 @@ import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Employee;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EmployeeModelTable {
     private static final String nameTable = "employee";
@@ -30,7 +32,7 @@ public class EmployeeModelTable {
     private static final TextField education = GUI.createTextField("Образование");
     private static final TextField phone = GUI.createTextField("Номер телефона");
     private static final TextField additionalLanguage = GUI.createTextField("Второй язык");
-
+    private static final Map<String, Object> dataUpdate = new HashMap<>();
 
     private static void attachColumn(){
         educationColumn.setCellValueFactory(new PropertyValueFactory<>("education"));
@@ -57,6 +59,15 @@ public class EmployeeModelTable {
             throw new RuntimeException(e);
         }
     }
+
+    private static void fillDataUpdate(){
+        dataUpdate.put("fio", fio.getText());
+        dataUpdate.put("post_code", Integer.parseInt(postCode.getText()));
+        dataUpdate.put("phone_number", phone.getText());
+        dataUpdate.put("education", education.getText());
+        dataUpdate.put("additional_language", additionalLanguage.getText());
+    }
+
     public static TableView<Employee> buildTable(){
         attachColumn();
         setDataInCell();
@@ -90,6 +101,11 @@ public class EmployeeModelTable {
     public static void insert(){
         Database.makeQueryInsert("employee", Integer.parseInt(id.getText()),
                 fio.getText(), Integer.parseInt(postCode.getText()), phone.getText(), education.getText(), additionalLanguage.getText());
+    }
+
+    public static void update(){
+        fillDataUpdate();
+        Database.makeQueryUpdate(nameTable, dataUpdate, "employee_id", Integer.parseInt(id.getText()));
     }
 
     public static void clearColumns(){
