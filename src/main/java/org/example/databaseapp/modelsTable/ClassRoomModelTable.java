@@ -12,6 +12,8 @@ import org.example.databaseapp.tables.ClassRoom;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ClassRoomModelTable{
     private static final String nameTable = "room_class";
@@ -24,6 +26,7 @@ public class ClassRoomModelTable{
     private static final TextField id = GUI.createTextField("id");
     private static final TextField nameClass = GUI.createTextField("Название класса");
     private static final TextField price = GUI.createTextField("Цена");
+    private static final  Map<String, Object> dataUpdate = new LinkedHashMap<>();
 
 
     public static String getNameTable(){
@@ -48,6 +51,11 @@ public class ClassRoomModelTable{
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+    }
+
+    private static void fillDataUpdate(){
+        dataUpdate.put("class_name", nameClass.getText());
+        dataUpdate.put("price", Double.parseDouble(price.getText()));
     }
 
     public static TableView<ClassRoom> buildTable(){
@@ -83,8 +91,10 @@ public class ClassRoomModelTable{
     }
 
     public static void update(){
-
+        fillDataUpdate();
+        Database.makeQueryUpdate("room_class", dataUpdate, "room_class_code", Integer.parseInt(id.getText()));
     }
+
 
     public static void clearColumns(){
         table.getColumns().clear();

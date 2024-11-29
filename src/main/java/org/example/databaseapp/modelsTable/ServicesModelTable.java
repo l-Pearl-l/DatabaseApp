@@ -12,6 +12,8 @@ import org.example.databaseapp.tables.ClassRoom;
 import org.example.databaseapp.tables.Service;
 
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ServicesModelTable {
     private static final String nameTable = "services";
@@ -23,6 +25,7 @@ public class ServicesModelTable {
     private static final TextField id = GUI.createTextField("id");
     private static final TextField nameService = GUI.createTextField("Название услуги");
     private static final TextField price = GUI.createTextField("Цена");
+    private static final Map<String, Object> dataUpdate = new LinkedHashMap<>();
 
 
     private static void attachColumn(){
@@ -43,6 +46,11 @@ public class ServicesModelTable {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void fillDaraUpdate(){
+        dataUpdate.put("service_name", nameService.getText());
+        dataUpdate.put("service_price", Double.parseDouble(price.getText()));
     }
 
     public static TableView<Service>buildTable(){
@@ -78,6 +86,11 @@ public class ServicesModelTable {
 
     public static void insert(){
         Database.makeQueryInsert("services", Integer.parseInt(id.getText()), nameService.getText(), Double.parseDouble(price.getText()));
+    }
+
+    public static void update(){
+        fillDaraUpdate();
+        Database.makeQueryUpdate("services", dataUpdate, "service_code", Integer.parseInt(id.getText()));
     }
 
     public static void clearColumns(){

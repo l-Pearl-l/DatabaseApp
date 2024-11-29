@@ -134,7 +134,7 @@ public class WindowMain {
                 PostsModelTable.insert();
                 break;
             case("services"):
-                ServicesModelTable.insert();
+                ServicesModelTable.update();
                 break;
             case("hotel_room"):
                 HotelRoomModelTable.insert();

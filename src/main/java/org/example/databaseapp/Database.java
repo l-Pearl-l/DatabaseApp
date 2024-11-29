@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.Properties;
+import java.util.*;
 
 public class Database {
 
@@ -65,6 +65,29 @@ public class Database {
         try(PreparedStatement preparedStatement = connect.prepareStatement(query.toString())) {
             for(int i = 0; i < values.length; i++){
                 preparedStatement.setObject(i + 1, values[i]);
+            }
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void makeQueryUpdate(String nameTable, Map<String, Object> data, String nameId, int id){
+        StringBuilder query = new StringBuilder("UPDATE " + nameTable + " SET ");
+        Set<String> keys = data.keySet();
+        Collection<Object> values = data.values();
+        Iterator<String> iteratorKeys = keys.iterator();
+        Iterator<Object> iteratorValues = values.iterator();
+        for(int i = 0; i < data.size(); i++){
+            Object element = iteratorKeys.next();
+            query.append(element + " = ?, ");
+        }
+        query.setLength(query.length() - 2);
+        query.append(" WHERE " + nameId + " = " + id);
+        try {
+            PreparedStatement preparedStatement = connect.prepareStatement(query.toString());
+            for(int i = 0; i < data.size(); i++){
+                preparedStatement.setObject(i + 1, iteratorValues.next());
             }
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
